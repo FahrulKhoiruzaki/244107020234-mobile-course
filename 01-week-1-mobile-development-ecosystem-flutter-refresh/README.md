@@ -23,8 +23,8 @@ Tugas ini untuk memahami ekosistem pengembangan mobile lintas platform menggunak
 Berhasil membuat aplikasi pertama yang ada struktur 'Widget tree', dan berhasil mencoba perbedaan kecepatan dan retensi antara fitur *hot reload* dan *hot restart*
 
 ## Bukti
-![output](/screenshot/hasil_1.png)
-![output mini assignment](/screenshot/hasil_Mini_Assignment.png)
+![output](screenshot/hasil_1.png)
+![output mini assignment](screenshot/hasil_Mini_Assignment.png)
 
 ## Refleksi
 **1. Kapan native lebih tepat dipilih daripada cross-platform?**

@@ -8,7 +8,7 @@ Penghapusan Expanded pada Baris Nama: Menyebabkan teks mengalami overflow (perin
 
 | iPad | iPhone |
 | :---: | :---: |
-| ![iPad](/screenshot/hasil_hapus_expand_ipad.png) | ![iPhone](/screenshot/hasil_hapus_expand_iphone.png) |
+| ![iPad](screenshot/hasil_hapus_expand_ipad.png) | ![iPhone](screenshot/hasil_hapus_expand_iphone.png) |
 
 **2. Ganti mainAxisSize: MainAxisSize.min menjadi nilai default dan amati perubahan tinggi kartu.**
 
@@ -16,10 +16,10 @@ Nilai default dari mainAxisSize di Column adalah MainAxisSize.max. Ketika diubah
 
 | iPad | iPhone |
 | :---: | :---: |
-| ![iPad](/screenshot/hasil_ubah_mainAxisSize_ipad.png) | ![iPhone](screenshot/hasil_ubah_mainAxisSize_iphone.png) |
+| ![iPad](screenshot/hasil_ubah_mainAxisSize_ipad.png) | ![iPhone](screenshot/hasil_ubah_mainAxisSize_iphone.png) |
 
 **3. Tambahkan satu baris data (misal Email) menggunakan pola Row + Expanded yang sama.**
 
 | iPad | iPhone |
 | :---: | :---: |
-| ![iPad](/screenshot/hasil_email_ipad.png) | ![iPhone](screenshot/hasil_email_iphone.png) |
+| ![iPad](screenshot/hasil_email_ipad.png) | ![iPhone](screenshot/hasil_email_iphone.png) |
