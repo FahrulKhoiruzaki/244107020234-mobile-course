@@ -56,6 +56,10 @@ class ProfileCard extends StatelessWidget {
             Expanded(child: Text('Kelas')),
             Text('TI-2B'),
           ]),
+          const Row(children: [
+            Expanded(child: Text('Email')),
+            Text('fhrulzki10@gmail.com')
+          ])
         ],
       ),
     );
