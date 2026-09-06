@@ -23,3 +23,44 @@ Nilai default dari mainAxisSize di Column adalah MainAxisSize.max. Ketika diubah
 | iPad | iPhone |
 | :---: | :---: |
 | ![iPad](screenshot/hasil_email_ipad.png) | ![iPhone](screenshot/hasil_email_iphone.png) |
+
+## Praktikum Dashboard Responsif
+
+**Hasil praktikum dashboard responsif**
+
+| iPad | iPhone |
+| :---: | :---: |
+| ![iPad](screenshot/hasil_praktikum_dashboard_responsif_ipad.png) | ![iPhone](screenshot/hasil_praktikum_dashboard_responsif_iphone.png) |
+
+**Menambahkan StatefulWidget dan Cupertino**
+
+| iPad | iPhone |
+| :---: | :---: |
+| ![iPad](screenshot/hasil_tambah_cupertino_ipad.png) | ![iPhone](screenshot/hasil_tambah_cupertino_iphone.png) |
+
+## Eksperimen Layout
+
+**1. Ubah breakpoint dari 700 menjadi nilai lain dan amati perubahan jumlah kolom.**
+
+Breakpoint digunakan sebagai batas untuk menentukan perubahan layout. Jika lebar layar memenuhi nilai breakpoint, dashboard menggunakan 2 kolom. Jika tidak memenuhi, dashboard menggunakan 1 kolom. Untuk ipad air memiliki nilai 2000 sedangkan iphone 11 memakai nilai 400 untuk bisa 2 kolom
+
+| iPad | iPhone |
+| :---: | :---: |
+| ![iPad](screenshot/hasil_ubah_breakpoint_2000_ipad.png) | ![iPhone](screenshot/hasil_ubah_breakpoint_400_iphone.png) |
+
+**2. Ubah themeMode menjadi ThemeMode.dark, lalu kembalikan ke ThemeMode.system.**
+
+ThemeMode untuk menentukan pengaturan tema aplikasi, ThemeMode.dark dan ThemeMode.light memaksa aplikasi untuk menggunakan tema tersebut, sedangkan ThemeMode.system aplikasi akan mengikuti pengaturan device yang dipakai.
+
+| iPad | iPhone |
+| :---: | :---: |
+| ![iPad](screenshot/hasil_ubah_themedark_ipad.png) | ![iPhone](screenshot/hasil_ubah_themedark_iphone.png) |
+
+**3. Uji aplikasi dengan ukuran layar emulator yang berbeda.**
+
+Hasi menunjukkan jika aplikasi bisa menyesuaikan layout mengikuti ukuran layar. Penggunaan LayoutBuilder membuat dashboard lebih responsif jadi dapat digunakan untuk perangkat yang memiliki ukuran layar berbeda.
+
+**4. Tambahkan Semantics atau label yang bermakna pada elemen yang penting bagi screen reader.**
+
+Semantics membantu aksesbilitas aplikasi, yang jika ditekan akan berbunyi sesuai label yang diberi. Widget yang mempunyai fungsi penting bisa diberikan label dan petunjuk sehingga lebih mudah dipahami oleh pengguna yang menggunakan screen reader.
+

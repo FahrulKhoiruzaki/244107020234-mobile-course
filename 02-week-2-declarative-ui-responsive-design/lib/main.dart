@@ -19,7 +19,7 @@ class _DashboardAppState extends State<DashboardApp>{
       debugShowCheckedModeBanner: false,
       theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo),
       darkTheme: ThemeData(useMaterial3: true, brightness: Brightness.dark, colorSchemeSeed: Colors.indigo),
-      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+      themeMode: ThemeMode.system,
       home: DashboardPage(
         isDark: isDark,
         onDarkChanged: (value) => setState(() => isDark = value),
@@ -43,9 +43,13 @@ class DashboardPage extends StatelessWidget{
             children: [
               Icon(isDark ? Icons.dark_mode : Icons.light_mode),
               const SizedBox(width: 4),
-              CupertinoSwitch(
-                value: isDark,
-                onChanged: onDarkChanged,
+              Semantics(
+                label: 'Dark Mode',
+                hint: 'Aktifkan untuk mode gelap',
+                child: CupertinoSwitch(
+                  value: isDark,
+                  onChanged: onDarkChanged,
+                ),
               ),
               const SizedBox(width: 12),
             ],
