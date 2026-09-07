@@ -146,12 +146,15 @@ Layout diuji pada ukuran layar sempit dan lebar.
 **1. Ekstrak kartu informasi menjadi widget reusable (misal InfoCard) yang menerima title dan value, sehingga tidak ada duplikasi widget.**
 
 ![output](screenshot/info_card.png)
+
 **2. Ganti warna dan ukuran yang di-hardcode dengan Theme.of(context) agar mengikuti tema terang/gelap secara otomatis.**
 
-| ![1](screenshot/ganti_warna_ukuran_di-hardcore.png) | ![2](screenshot/ganti_warna_ukuran_di-hardcore2.png) |
+| ![1](screenshot/ganti_warna_ukuran_di-hardcore.png) | ![2](screenshot/ganti-warna_ukuran_di-hardcore2.png) |
+
 **3. Pindahkan breakpoint ke satu konstanta bernama (misal const kWideBreakpoint = 700;) agar hanya didefinisikan satu kali.**
 
 ![output](screenshot/grid_view_info_card.png)
+
 **4. Jalankan flutter analyze dan pastikan tidak ada error maupun warning baru.**
 
 ![output](screenshot/analyze.png)
