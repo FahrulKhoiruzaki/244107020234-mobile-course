@@ -64,3 +64,12 @@ Hasi menunjukkan jika aplikasi bisa menyesuaikan layout mengikuti ukuran layar. 
 
 Semantics membantu aksesbilitas aplikasi, yang jika ditekan akan berbunyi sesuai label yang diberi. Widget yang mempunyai fungsi penting bisa diberikan label dan petunjuk sehingga lebih mudah dipahami oleh pengguna yang menggunakan screen reader.
 
+## Tugas utama
+
+| iPad | iPhone |
+| :---: | :---: |
+| ![iPad](screenshot/hasil_tugas_utama_light_ipad.png) | ![iPhone](screenshot/hasil_tugas_utama_light_iphone.png) |
+
+| iPad | iPhone |
+| :---: | :---: |
+| ![iPad](screenshot/hasil_tugas_utama_dark_ipad.png) | ![iPhone](screenshot/hasil_tugas_utama_dark_iphone.png) |

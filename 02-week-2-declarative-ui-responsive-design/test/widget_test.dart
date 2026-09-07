@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:my_first_app/main.dart';
+import 'package:responsive_dashboard/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    await tester.pumpWidget(const ProfileApp());
+    await tester.pumpWidget(const AcademicOverviewApp());
 
     expect(find.text('0'), findsOneWidget);
     expect(find.text('1'), findsNothing);
