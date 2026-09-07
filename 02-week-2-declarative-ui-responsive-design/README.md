@@ -141,3 +141,30 @@ Layout diuji pada ukuran layar sempit dan lebar.
 - Dark mode tetap menggunakan `ThemeData` sehingga warna mengikuti tema.
 - Tidak terdapat widget eksperimental yang digunakan dalam layout.
 
+## Refactoring challenge
+
+**1. Ekstrak kartu informasi menjadi widget reusable (misal InfoCard) yang menerima title dan value, sehingga tidak ada duplikasi widget.**
+
+![output](screenshot/info_card.png)
+**2. Ganti warna dan ukuran yang di-hardcode dengan Theme.of(context) agar mengikuti tema terang/gelap secara otomatis.**
+
+| ![1](screenshot/ganti_warna_ukuran_di-hardcore.png) | ![2](screenshot/ganti_warna_ukuran_di-hardcore2.png) |
+**3. Pindahkan breakpoint ke satu konstanta bernama (misal const kWideBreakpoint = 700;) agar hanya didefinisikan satu kali.**
+
+![output](screenshot/grid_view_info_card.png)
+**4. Jalankan flutter analyze dan pastikan tidak ada error maupun warning baru.**
+
+![output](screenshot/analyze.png)
+
+## Testing Dasar
+
+![output](screenshot/flutter_test.png)
+
+## Checklist verifikasi
+
+- [x] `flutter analyze` tidak menghasilkan error.
+- [x] `flutter test` lulus semua widget test responsif.
+- [x] Aplikasi dapat dijalankan pada ukuran layar sempit dan lebar.
+- [x] Dark mode memiliki kontras dan teks yang terbaca.
+- [x] Struktur widget dapat dijelaskan saat code review.
+- [x] Screenshot, folder `test/`, dan README sudah tersimpan pada folder tugas Week 2.

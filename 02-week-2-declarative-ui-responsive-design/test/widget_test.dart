@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:responsive_dashboard/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Dashboard satu kolom di layar sempit', (tester) async {
+    tester.view.physicalSize = const Size(400, 800);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
     await tester.pumpWidget(const AcademicOverviewApp());
 
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    final width = tester.getSize(find.byType(Card).first).width;
+    expect(width, lessThan(700));
+  });
 
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('Dashboard dua kolom di layar lebar', (tester) async {
+    tester.view.physicalSize = const Size(1200, 800);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
 
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tester.pumpWidget(const AcademicOverviewApp());
+
+    final width = tester.getSize(find.byType(Card).first).width;
+    expect(width, greaterThan(300));
   });
 }
