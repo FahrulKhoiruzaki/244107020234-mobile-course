@@ -73,3 +73,71 @@ Semantics membantu aksesbilitas aplikasi, yang jika ditekan akan berbunyi sesuai
 | iPad | iPhone |
 | :---: | :---: |
 | ![iPad](screenshot/hasil_tugas_utama_dark_ipad.png) | ![iPhone](screenshot/hasil_tugas_utama_dark_iphone.png) |
+
+## AI Prompt Challenge
+
+### Prompt 1 — Desain Layout
+
+**Prompt:**
+
+"Bandingkan dua tata letak dashboard akademik untuk Flutter:
+versi `GridView` dan versi `LayoutBuilder` + `Column`.
+Jelaskan trade-off responsif dan aksesibilitasnya."
+
+**Keputusan:**
+
+Saya menggunakan kombinasi `LayoutBuilder` dan `GridView`.
+
+`LayoutBuilder` digunakan untuk menentukan breakpoint berdasarkan lebar
+layar, sedangkan `GridView` digunakan untuk menyusun kartu informasi.
+
+Pada layar sempit digunakan satu kolom, sedangkan pada layar lebar
+digunakan dua kolom.
+
+**Alasan teknis:**
+
+- Kode lebih sederhana untuk dashboard berbasis kartu.
+- Mudah mengubah jumlah kolom berdasarkan ukuran layar.
+- Cocok ketika jumlah informasi bertambah.
+- Tetap dapat mempertahankan aksesibilitas dengan `Semantics`.
+
+---
+
+### Prompt 2 — Penguatan Konsep Expanded
+
+**Prompt:**
+
+"Jelaskan kapan penggunaan `Expanded` justru menyebabkan overflow
+di dalam `Row`, beri contoh kode yang gagal dan perbaikannya."
+
+**Kesimpulan:**
+
+`Expanded` digunakan untuk membuat widget mengambil sisa ruang yang
+tersedia pada `Row` atau `Column`. Penggunaan yang salah dapat
+menyebabkan masalah ketika parent tidak memberikan batas ukuran yang
+jelas atau ketika child membutuhkan ukuran yang melebihi ruang tersedia.
+
+Pada dashboard ini `Expanded` digunakan pada bagian teks profil dan
+teks `InfoCard` agar teks menggunakan ruang yang tersisa.
+
+---
+
+### Prompt 3 — Verification
+
+**Prompt:**
+
+"Periksa kembali rekomendasi layout di atas: apakah tetap responsif
+di bawah 600px, apakah mengurangi aksesibilitas, dan apakah ada widget
+yang tidak tersedia di Flutter stabil saat ini?"
+
+**Hasil verifikasi:**
+
+Layout diuji pada ukuran layar sempit dan lebar.
+
+- Layar sempit → satu kolom.
+- Layar lebar → dua kolom.
+- `Expanded` digunakan pada `Row` dengan constraint yang valid.
+- `Semantics` digunakan untuk informasi penting dan toggle tema.
+- Dark mode tetap menggunakan `ThemeData` sehingga warna mengikuti tema.
+- Tidak terdapat widget eksperimental yang digunakan dalam layout.
+
