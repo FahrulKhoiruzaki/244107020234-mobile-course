@@ -173,7 +173,7 @@ Layout diuji pada ukuran layar sempit dan lebar.
 - [x] Struktur widget dapat dijelaskan saat code review.
 - [x] Screenshot, folder `test/`, dan README sudah tersimpan pada folder tugas Week 2.
 
-## 7. Refleksi dan Referensi
+## Refleksi dan Referensi
 
 **1. Apa perbedaan cara berpikir imperative dan declarative saat membangun UI?**
 
