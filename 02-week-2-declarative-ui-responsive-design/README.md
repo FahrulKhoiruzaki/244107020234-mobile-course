@@ -148,7 +148,7 @@ Layout diuji pada ukuran layar sempit dan lebar.
 ![output](screenshot/info_card.png)
 
 **2. Ganti warna dan ukuran yang di-hardcode dengan Theme.of(context) agar mengikuti tema terang/gelap secara otomatis.**
-
+| 2 | 1 |
 | :---: | :---: |
 | ![1](screenshot/ganti_warna_ukuran_di-hardcore.png) | ![2](screenshot/ganti-warna_ukuran_di-hardcore2.png) |
 
