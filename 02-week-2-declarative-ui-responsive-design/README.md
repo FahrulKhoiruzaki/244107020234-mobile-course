@@ -149,6 +149,7 @@ Layout diuji pada ukuran layar sempit dan lebar.
 
 **2. Ganti warna dan ukuran yang di-hardcode dengan Theme.of(context) agar mengikuti tema terang/gelap secara otomatis.**
 
+| :---: | :---: |
 | ![1](screenshot/ganti_warna_ukuran_di-hardcore.png) | ![2](screenshot/ganti-warna_ukuran_di-hardcore2.png) |
 
 **3. Pindahkan breakpoint ke satu konstanta bernama (misal const kWideBreakpoint = 700;) agar hanya didefinisikan satu kali.**
