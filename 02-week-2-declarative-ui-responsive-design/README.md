@@ -172,3 +172,21 @@ Layout diuji pada ukuran layar sempit dan lebar.
 - [x] Dark mode memiliki kontras dan teks yang terbaca.
 - [x] Struktur widget dapat dijelaskan saat code review.
 - [x] Screenshot, folder `test/`, dan README sudah tersimpan pada folder tugas Week 2.
+
+## 7. Refleksi dan Referensi
+
+**1. Apa perbedaan cara berpikir imperative dan declarative saat membangun UI?**
+
+Imperative lebih fokus pada langkah untuk mengubah UI, sedangkan declarative fokus pada hasil UI yang ingin ditampilkan berdasarkan kondisi atau state.
+
+**2. Kapan Expanded membantu dan kapan penggunaannya justru menghasilkan layout error?**
+
+`Expanded` membantu widget mengisi sisa ruang dalam `Row` atau `Column`. Tapi, bisa menyebabkan error jika digunakan pada layout yang tidak memiliki batas ukuran yang jelas.
+
+**3. Bagaimana breakpoint dan theme memengaruhi pengalaman pengguna?**
+
+Breakpoint membuat dashboard menyesuaikan ukuran layar, yaitu satu kolom pada layar sempit dan dua kolom pada layar lebar. Theme membuat tampilan tetap nyaman digunakan dalam light maupun dark mode.
+
+**4. Apa yang Anda verifikasi dari rekomendasi AI setelah tugas inti selesai?**
+
+Saya membandingkan `GridView` dengan `LayoutBuilder + Column`, kemudian mengecek kembali responsivitas, aksesibilitas, dan penggunaan widget. Hasilnya diverifikasi dengan menjalankan `flutter analyze` dan `flutter test`.
