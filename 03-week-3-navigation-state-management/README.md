@@ -108,3 +108,58 @@ Praktikum berhasil menggunakan GoRouter untuk membuat navigasi halaman. Pengguna
 *mengapa menampilkan ulang data lama (stale data) dengan indikator refresh kadang lebih baik daripada mengosongkan layar? Kapan pola itu penting?*
 
 Karena menampilkan data lama dengan indikator refresh lebih bagus kareana pengguna dapat melihat informasi yang tersedia selama proses pembaruan berlangsung. Pola ini penting di aplikasi kayak marketplace, berita, atau dashboard, karena mengosongkan layar saat refresh dapat membuat aplikasi kerasa lambat dan mengganggu pengalaman seorang pengguna.
+
+## AI Challenge
+
+| stats_provider.dart |
+| :---: |
+| ![kode](03-week3_async/screenshot/stats_provider.png) |
+
+| stats_page.dart |
+| :---: |
+| ![kode](03-week3_async/screenshot/stats_page.png) |
+
+| main.dart |
+| :---: |
+| ![kode](03-week3_async/screenshot/main_ai.png) |
+
+| stats_provider_test.dart |
+| :---: |
+| ![kode](03-week3_async/screenshot/stats_provider_test.png) |
+
+**Ada satu masalah**
+
+Karena requirement-nya gagal secara acak 30%, unit test di atas secara teori bisa gagal 30% juga.
+Itu jelek untuk automated testing.
+Jadi perlu memperbaiki desain supaya testing deterministik.
+
+**Hasil**
+
+| hasil |
+| :---: |
+| ![kode](03-week3_async/screenshot/hasil_ai.png) |
+
+**Perbaikan**
+
+| perbaikan_kode |
+| :---: |
+| ![kode](03-week3_async/screenshot/perbaikan_ai.png) |
+
+| flutter_analyze_test |
+| :---: |
+| ![output](03-week3_async/screenshot/analyze_test.png) |
+
+### Verification Checklist
+
+* *Immutable State* — ✅<br>
+State dikelola menggunakan AsyncValue dan tidak dimodifikasi secara langsung dengan state.add().
+* *Penggunaan ref.watch dan ref.read* — ✅<br>
+ref.watch() digunakan untuk memantau state di build, sedangkan ref.read() digunakan pada tombol retry.
+8 *Penanganan AsyncValue* — ✅<br>
+UI menangani tiga kondisi: loading, error, dan success/data.
+* *Provider Terdefinisi dengan Jelas* — ✅<br>
+Menggunakan satu AsyncNotifierProvider<StatsNotifier, List<String>> dengan tipe state yang jelas.
+* *Menggunakan API Riverpod Terbaru* — ✅<br>
+Implementasi menggunakan AsyncNotifier dan ConsumerWidget, tanpa API Riverpod lama.
+* *Pengujian dan Analisis Kode* — ✅<br>
+flutter analyze sudah diperbaiki hingga tidak ada issue, dan flutter test digunakan untuk memastikan kode berjalan dengan benar.

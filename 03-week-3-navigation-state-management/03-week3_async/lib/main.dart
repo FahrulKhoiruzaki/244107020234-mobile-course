@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'pages/product_page.dart';
+
+import 'pages/stats_page.dart';
 
 void main() {
   runApp(
@@ -16,12 +17,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Week 3 - AsyncValue',
+      title: 'Week 3 - AI Challenge',
       theme: ThemeData(
         colorSchemeSeed: Colors.teal,
         useMaterial3: true,
       ),
-      home: const ProductPage(),
+      home: const StatsPage(),
     );
   }
 }
