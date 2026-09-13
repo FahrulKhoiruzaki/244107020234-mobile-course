@@ -68,4 +68,16 @@ Praktikum berhasil menggunakan GoRouter untuk membuat navigasi halaman. Pengguna
 ### Struktur folder:
 | struktur |
 | :---: |
-| ![struktur](screenshot/struktur_folder.png) |
+| ![struktur](03-week3_async/screenshot/struktur_folder.png) |
+
+### Halaman Home (lib/pages/product_page.dart):
+
+| product_page |
+| :---: |
+| ![home_page](03-week3_async/screenshot/product_page.png) |
+
+### Halaman Detail (lib/providers/product_provider.dart):
+
+| product_providers |
+| :---: |
+| ![detail_page](03-week3_async/screenshot/products_providers.png) |
