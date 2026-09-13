@@ -70,14 +70,41 @@ Praktikum berhasil menggunakan GoRouter untuk membuat navigasi halaman. Pengguna
 | :---: |
 | ![struktur](03-week3_async/screenshot/struktur_folder.png) |
 
-### Halaman Home (lib/pages/product_page.dart):
+### (lib/pages/product_page.dart):
 
 | product_page |
 | :---: |
 | ![home_page](03-week3_async/screenshot/product_page.png) |
 
-### Halaman Detail (lib/providers/product_provider.dart):
+### (lib/providers/product_provider.dart):
 
 | product_providers |
 | :---: |
 | ![detail_page](03-week3_async/screenshot/products_providers.png) |
+
+### Output
+
+| Output |
+| :---: |
+| ![Output](03-week3_async/screenshot/hasil_1.png) |
+
+### Ubah build() sementara untuk melempar error:
+
+| kode_sebelum | kode_sesudah |
+| :---: | :---: |
+| ![sebelum](03-week3_async/screenshot/kode_sebelum_1.png) | ![sesudah](03-week3_async/screenshot/kode_sesudah_1.png) |
+
+| Output |
+| :---: |
+| ![Output](03-week3_async/screenshot/hasil_error.png) |
+
+### Pulihkan kode
+
+| Output |
+| :---: |
+| ![Output](03-week3_async/screenshot/hasil_pulih.png) |
+
+### Refleksi
+*mengapa menampilkan ulang data lama (stale data) dengan indikator refresh kadang lebih baik daripada mengosongkan layar? Kapan pola itu penting?*
+
+Karena menampilkan data lama dengan indikator refresh lebih bagus kareana pengguna dapat melihat informasi yang tersedia selama proses pembaruan berlangsung. Pola ini penting di aplikasi kayak marketplace, berita, atau dashboard, karena mengosongkan layar saat refresh dapat membuat aplikasi kerasa lambat dan mengganggu pengalaman seorang pengguna.
