@@ -163,3 +163,40 @@ Menggunakan satu AsyncNotifierProvider<StatsNotifier, List<String>> dengan tipe 
 Implementasi menggunakan AsyncNotifier dan ConsumerWidget, tanpa API Riverpod lama.
 * *Pengujian dan Analisis Kode* — ✅<br>
 flutter analyze sudah diperbaiki hingga tidak ada issue, dan flutter test digunakan untuk memastikan kode berjalan dengan benar.
+
+## Refactoring dan testing
+
+### Refactoring Challenge
+
+* **Pisahkan widget bar ToDo**
+
+| struktur_folder |
+| :---: |
+| ![code](03-week3_todo/screenshot/struktur_folder2.png) |
+
+* **Ekstrak logika filter**
+
+| code |
+| :---: |
+| ![code](03-week3_todo/screenshot/provider_filter.png) |
+
+* **Integrasi aplikasi ToDo dengan GoRouter**
+
+| code |
+| :---: |
+| ![code](03-week3_todo/screenshot/code_routing.png) |
+
+### Testing
+
+| output |
+| :---: |
+| ![output](03-week3_todo/screenshot/verifikasi.png) |
+
+### Checklist verifikasi mandiri
+
+* **Navigasi GoRouter bekerja: pindah halaman, back, dan akses path detail langsung.** ✅
+* **ProviderScope membungkus root aplikasi; state ToDo bertahan saat berpindah halaman.** ✅
+* **UI AsyncValue menangani loading, error, dan success, bukan hanya success.** ✅
+* **flutter analyze tanpa issue dan semua test lulus.** ✅
+* **Hasil AI diverifikasi dan didokumentasikan pada folder docs/.** ✅
+
