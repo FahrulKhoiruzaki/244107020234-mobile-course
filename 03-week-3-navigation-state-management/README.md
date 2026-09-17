@@ -200,3 +200,50 @@ flutter analyze sudah diperbaiki hingga tidak ada issue, dan flutter test diguna
 * **flutter analyze tanpa issue dan semua test lulus.** ✅
 * **Hasil AI diverifikasi dan didokumentasikan pada folder docs/.** ✅
 
+## Tugas, refleksi, dan referensi
+
+### Mini project / Industry Challenge
+
+| analyze_test |
+| :---: |
+| ![output](03-week3_mini_project/screenshot/analyze_test.png) |
+
+| home |
+| :---: |
+| ![output](03-week3_mini_project/screenshot/home.png) |
+
+| statistik |
+| :---: |
+| ![output](03-week3_mini_project/screenshot/statistik.png) |
+
+| tambah_tugas |
+| :---: |
+| ![output](03-week3_mini_project/screenshot/tambah_tugas.png) |
+
+| home_tugas |
+| :---: |
+| ![output](03-week3_mini_project/screenshot/home1.png) |
+
+| statistik_tugas |
+| :---: |
+| ![output](03-week3_mini_project/screenshot/statistik1.png) |
+
+| tugas_selesai |
+| :---: |
+| ![output](03-week3_mini_project/screenshot/tugas_selesai.png) |
+
+| statistik_tugas_selesai |
+| :---: |
+| ![output](03-week3_mini_project/screenshot/statistik_selesai.png) |
+
+## Refleksi
+
+* **Kapan setState masih cukup, dan kapan state harus naik ke Riverpod?**<br>
+setState masih cukup untuk state sederhana yang hanya digunakan oleh satu widget, misalnya mengubah tampilan lokal. Riverpod lebih sesuai ketika state digunakan oleh beberapa widget atau halaman dan membutuhkan pengelolaan yang lebih terstruktur.
+* **Apa perbedaan context.go dan context.push, dan kapan masing-masing tepat digunakan?**<br>
+context.go digunakan untuk berpindah ke lokasi atau route tertentu. Sedangkan context.push menambahkan route baru ke navigation stack sehingga halaman sebelumnya tetap dapat dikembalikan menggunakan tombol back.<br>
+Pada aplikasi ini, navigasi antar halaman utama menggunakan struktur GoRouter dengan NavigationBar.
+* **Bagaimana AsyncValue mencegah bug dibanding tiga boolean terpisah?**<br>
+AsyncValue menyediakan representasi state asynchronous yang terstruktur, yaitu loading, error, dan data. Dengan demikian, kondisi asynchronous lebih mudah ditangani daripada menggunakan beberapa boolean seperti isLoading, hasError, dan hasData secara terpisah.
+* **Bagian mana dari hasil AI yang Anda perbaiki, dan mengapa?**<br>
+AsyncValue menyediakan representasi state asynchronous yang terstruktur, yaitu loading, error, dan data. Dengan demikian, kondisi asynchronous lebih mudah ditangani daripada menggunakan beberapa boolean seperti isLoading, hasError, dan hasData secara terpisah.
