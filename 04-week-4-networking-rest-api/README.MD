@@ -34,3 +34,18 @@ Aplikasi Flutter yang menampilkan daftar data dari REST API (JSONPlaceholder `/p
 
 ## AI Challenge
 
+| test_hasil_AI |
+|:---:|
+| <img src="screenshot/test_hasil_ai.png" width="250"> |
+
+| kesalahan | perbaikan |
+|:---:|:---:|
+| <img src="screenshot/kesalahan_ai.png" width="250"> | <img src="screenshot/perbaikan.png" width="250"> |
+
+| test_setelah_perbaikan |
+|:---:|
+| <img src="screenshot/test_perbaikan.png" width="250"> |
+
+| menambahkan_edge_case |
+|:---:|
+| <img src="screenshot/test_perbaikan.png" width="250"> |
