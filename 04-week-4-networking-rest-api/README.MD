@@ -77,3 +77,42 @@ Aplikasi Flutter yang menampilkan daftar data dari REST API (JSONPlaceholder `/p
 * [x] **Dokumentasi AI.** Hasil penggunaan AI, prompt, kode yang diverifikasi, perbaikan, dan alasan perbaikan didokumentasikan di folder `docs/`.
 
 
+## Tugas, Refleksi, dan Referensi
+
+| flutter_analyze_test |
+|:---:|
+| <img src="week4_tugas/screenshots/analyze_test.png" width="250"> |
+
+| hasil_1 | hasil_2 |
+|:---:|:---:|
+| <img src="week4_tugas/screenshots/hasil_1.png" width="250"> | <img src="week4_tugas/screenshots/hasil_2.png" width="250"> |
+
+| hasil_detail_1 | hasil_detail_2 |
+|:---:|:---:|
+| <img src="week4_tugas/screenshots/pagination_1.png" width="250"> | <img src="week4_tugas/screenshots/pagination_2.png" width="250"> |
+
+### Refleksi
+
+#### 1. Mengapa UI tidak boleh memanggil Dio secara langsung? Apa yang terjadi jika aturan ini dilanggar?
+
+UI tidak boleh memanggil Dio secara langsung karena proses pengambilan data sebaiknya dipisahkan dari tampilan aplikasi. Dio digunakan untuk komunikasi dengan API, sedangkan Repository mengelola pengambilan dan pengolahan data sebelum digunakan oleh UI.
+
+Jika UI memanggil Dio secara langsung, kode menjadi lebih sulit dirawat dan diuji karena logika jaringan bercampur dengan tampilan. Jika terjadi perubahan API, bagian UI juga berpotensi perlu diubah.
+
+#### 2. Kapan pagination di sisi klien cukup digunakan dan kapan harus menggunakan `_page` dan `_limit` dari server?
+
+Pagination di sisi klien cukup digunakan ketika seluruh data sudah tersedia di aplikasi dan jumlah datanya relatif kecil. Data dapat dibagi menjadi beberapa bagian untuk ditampilkan secara bertahap.
+
+Pagination menggunakan `_page` dan `_limit` dari server lebih sesuai ketika data berjumlah banyak. Aplikasi dapat meminta data sesuai halaman yang dibutuhkan sehingga tidak harus mengambil seluruh data sekaligus.
+
+#### 3. Bagaimana exception dari Repository dapat menjadi `AsyncError` tanpa `try/catch` di setiap widget? Kapan `try/catch` tetap diperlukan?
+
+Pada aplikasi yang menggunakan Riverpod, operasi asynchronous yang dijalankan melalui provider dapat menghasilkan status error ketika terjadi exception. Riverpod kemudian menyediakan status tersebut melalui `AsyncValue`, sehingga UI dapat menampilkan kondisi error tanpa harus menulis `try/catch` di setiap widget.
+
+`try/catch` tetap diperlukan ketika kode perlu menangani exception secara khusus, misalnya untuk mengubah error menjadi pesan tertentu, menjalankan proses pemulihan, atau melakukan tindakan tambahan sebelum error diteruskan.
+
+#### 4. Output AI apa yang diperbaiki dan mengapa?
+
+Output AI perlu diperiksa dan disesuaikan dengan kebutuhan modul serta struktur project. Pada pengembangan model `Comment`, penanganan field yang hilang atau bernilai `null` perlu dipastikan agar proses parsing JSON tidak menyebabkan error dan tetap menghasilkan nilai default yang sesuai.
+
+Selain itu, kode harus diperiksa melalui `flutter analyze` dan `flutter test`. Perbaikan dilakukan jika ditemukan ketidaksesuaian struktur kode, kesalahan tipe data, atau pengujian yang gagal. Dengan demikian, kode yang digunakan bukan hanya berdasarkan hasil AI, tetapi juga disesuaikan dan diverifikasi.
