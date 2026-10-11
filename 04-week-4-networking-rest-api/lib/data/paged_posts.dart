@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'models/post.dart';
 import 'providers.dart';
 
@@ -28,8 +29,7 @@ class PagedPostsNotifier extends Notifier<PagedPostsState> {
   Future<void> loadFirstPage() async {
     final repository = ref.read(postRepositoryProvider);
     try {
-      final items =
-          await repository.fetchPostsPage(page: 1, limit: 10);
+      final items = await repository.fetchPostsPage(page: 1, limit: 10);
       state = PagedPostsState(
         items: items,
         page: 1,
@@ -53,23 +53,19 @@ class PagedPostsNotifier extends Notifier<PagedPostsState> {
     );
     try {
       final next = currentPage + 1;
-      final items =
-          await repo.fetchPostsPage(page: next, limit: 10);
+      final items = await repo.fetchPostsPage(page: next, limit: 10);
       state = PagedPostsState(
         items: [...currentItems, ...items],
         page: next,
         hasMore: items.length == 10,
       );
     } catch (e) {
-      state = PagedPostsState(
-        items: currentItems,
-        page: currentPage,
-        error: e,
-      );
+      state = PagedPostsState(items: currentItems, page: currentPage, error: e);
     }
   }
 }
 
 final pagedPostsProvider =
     NotifierProvider<PagedPostsNotifier, PagedPostsState>(
-        PagedPostsNotifier.new);
+      PagedPostsNotifier.new,
+    );

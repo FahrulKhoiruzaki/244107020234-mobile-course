@@ -49,3 +49,31 @@ Aplikasi Flutter yang menampilkan daftar data dari REST API (JSONPlaceholder `/p
 | menambahkan_edge_case |
 |:---:|
 | <img src="screenshot/test_perbaikan.png" width="250"> |
+
+## Refactoring dan Testing
+
+| flutter_analyze_test |
+|:---:|
+| <img src="screenshot/analyze_test_refac.png" width="250"> |
+
+| hasil_1 | hasil_2 |
+|:---:|:---:|
+| <img src="screenshot/refac_test_1.png" width="250"> | <img src="screenshot/refac_test_2.png" width="250"> |
+
+| hasil_detail_1 | hasil_detail_2 |
+|:---:|:---:|
+| <img src="screenshot/refac_test_detail_1.png" width="250"> | <img src="screenshot/refac_test_detail_2.png" width="250"> |
+
+### Checklist Verifikasi Mandiri
+
+* [x] **UI menggunakan Repository dan Provider.** Pengambilan data post dilakukan melalui `PostRepository` dan `postListProvider`, bukan dengan memanggil Dio langsung dari UI.
+
+* [x] **Empat state tampilan.** Loading, error dengan tombol *Coba lagi*, empty, dan success sudah diimplementasikan. Perilaku setiap state perlu dipastikan melalui pengujian aplikasi.
+
+* [x] **Pagination.** Halaman `PagedPostPage` menggunakan `pagedPostsProvider` untuk memuat data bertahap. Perlu diuji secara langsung untuk memastikan data bertambah saat scroll, tidak ada request ganda, dan indikator akhir data tampil.
+
+* [x] **Pemeriksaan kode dan unit test.** Hasil `flutter analyze` menunjukkan `No issues found!` dan hasil `flutter test` menunjukkan `All tests passed!` pada pengujian yang telah dijalankan.
+
+* [x] **Dokumentasi AI.** Hasil penggunaan AI, prompt, kode yang diverifikasi, perbaikan, dan alasan perbaikan didokumentasikan di folder `docs/`.
+
+
