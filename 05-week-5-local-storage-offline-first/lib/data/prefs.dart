@@ -1,26 +1,39 @@
+
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PrefsRepository {
-  static const _darkModeKey = 'dark_mode';
-  static const _lastOpenedKey = 'last_opened_at';
+class AppPrefs {
+  static const String _darkModeKey = 'dark_mode';
+  static const String _lastOpenedKey = 'last_opened';
 
-  Future<bool> getDarkMode() async {
+  // Membaca preferensi tema.
+  static Future<bool> getDarkMode() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool(_darkModeKey) ?? false;
   }
 
-  Future<void> setDarkMode(bool value) async {
+  // Menyimpan preferensi tema.
+  static Future<void> setDarkMode(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_darkModeKey, value);
   }
 
-  Future<void> markOpenedNow() async {
+  // Menyimpan waktu terakhir aplikasi dibuka.
+  static Future<void> saveLastOpened() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_lastOpenedKey, DateTime.now().toIso8601String());
+
+    await prefs.setString(
+      _lastOpenedKey,
+      DateTime.now().toIso8601String(),
+    );
   }
 
-  Future<String?> getLastOpened() async {
+  // Membaca waktu terakhir aplikasi dibuka.
+  static Future<DateTime?> getLastOpened() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_lastOpenedKey);
+    final value = prefs.getString(_lastOpenedKey);
+
+    if (value == null) return null;
+
+    return DateTime.tryParse(value);
   }
 }

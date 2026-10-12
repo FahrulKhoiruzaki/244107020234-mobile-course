@@ -35,3 +35,48 @@
 | sinkronisasi |
 |:---:|
 | <img src="screenshots/offline_6.png" width="250"> |
+
+## AI Challenge
+
+| flutter_analyze_test |
+|:---:|
+| <img src="screenshots/ai_9.png" width="250"> |
+
+| halaman_awal |
+|:---:|
+| <img src="screenshots/ai_1.png" width="250"> |
+
+| tambah_catatan | buka_kembali |
+|:---:|:---:|
+| <img src="screenshots/ai_2.png" width="250"> | <img src="screenshots/ai_3.png" width="250"> |
+
+| tambah_catatan_offline | buka_kembali_offline |
+|:---:|:---:|
+| <img src="screenshots/ai_4.png" width="250"> | <img src="screenshots/ai_5.png" width="250"> |
+
+| sinkronisasi_aktif | sinkronisasi_mati |
+|:---:|:---:|
+| <img src="screenshots/ai_6.png" width="250"> | <img src="screenshots/ai_10.png" width="250"> |
+
+| ubah_gelap | buka_kembali |
+|:---:|:---:|
+| <img src="screenshots/ai_7.png" width="250"> | <img src="screenshots/ai_8.png" width="250"> |
+
+### AI Verification Checklist
+
+1. **Apakah AI menempatkan daftar catatan di SharedPreferences?**
+   Tidak. Daftar catatan disimpan menggunakan SQLite karena lebih sesuai untuk menyimpan koleksi data yang membutuhkan operasi CRUD. SharedPreferences digunakan untuk menyimpan preferensi tema dan waktu terakhir aplikasi dibuka.
+
+2. **Apakah skema AI mendukung antrean sync (`dirty flag` / `updated_at`) atau hanya CRUD polos?**
+   Ya. Model `Note` memiliki atribut `dirty` dan `updatedAt` untuk menandai catatan yang belum disinkronkan serta mencatat waktu pembaruan. Proses sinkronisasi masih berupa simulasi.
+
+3. **Apakah klaim "real-time" AI didukung stream (Drift/watch) atau hanya asumsi?**
+   Implementasi belum menggunakan stream dari Drift atau mekanisme `watch`. Pembaruan data dilakukan melalui pemanggilan ulang fungsi untuk membaca data, sehingga belum dapat diklaim sebagai pembaruan real-time berbasis stream.
+
+4. **Apakah estimasi boilerplate AI masuk akal setelah Anda mencoba instalasinya (`flutter pub add` + migrasi skema)?**
+   Proyek menggunakan `shared_preferences`, `sqflite`, dan `path` sebagai dependensi penyimpanan lokal. Skema tabel dibuat melalui kode inisialisasi database. Kesesuaian estimasi boilerplate dinilai berdasarkan proses instalasi dependensi dan pengujian implementasi pada proyek.
+
+5. **Keputusan final beserta alasannya**
+   SQLite dipilih untuk menyimpan catatan karena mendukung operasi CRUD dan penyimpanan data terstruktur. SharedPreferences digunakan untuk preferensi sederhana. Atribut `dirty` dan `updatedAt` disertakan untuk mendukung proses sinkronisasi. Sinkronisasi saat ini masih berupa simulasi dan implementasi belum menggunakan stream real-time.
+
+
