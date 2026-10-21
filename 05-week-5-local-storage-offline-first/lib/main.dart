@@ -1,20 +1,19 @@
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'data/local/note.dart';
 import 'data/prefs.dart';
 import 'data/repositories/note_repository.dart';
 import 'data/sync.dart';
+import 'pages/note_detail_page.dart';
 import 'pages/settings_page.dart';
+import 'widgets/note_tile.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const NotesApp());
 }
-
-// ============================================================
-// APLIKASI UTAMA
-// ============================================================
 
 class NotesApp extends StatefulWidget {
   const NotesApp({super.key});
@@ -27,13 +26,48 @@ class _NotesAppState extends State<NotesApp> {
   bool _darkMode = false;
   bool _ready = false;
 
+  final NoteRepository _repository = NoteRepository();
+  late final GoRouter _router;
+
   @override
   void initState() {
     super.initState();
+
+    _router = GoRouter(
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => NotesPage(
+            repository: _repository,
+            getDarkMode: () => _darkMode,
+            onThemeChanged: _changeTheme,
+          ),
+        ),
+        GoRoute(
+          path: '/note/:id',
+          builder: (context, state) {
+            final id = int.tryParse(state.pathParameters['id'] ?? '');
+
+            if (id == null) {
+              return const Scaffold(
+                body: Center(
+                  child: Text('ID catatan tidak valid.'),
+                ),
+              );
+            }
+
+            return NoteDetailPage(
+              noteId: id,
+              repository: _repository,
+            );
+          },
+        ),
+      ],
+    );
+
     _initializePrefs();
   }
 
-  // Memuat preferensi dan menyimpan waktu aplikasi dibuka.
   Future<void> _initializePrefs() async {
     try {
       final darkMode = await AppPrefs.getDarkMode();
@@ -49,52 +83,47 @@ class _NotesAppState extends State<NotesApp> {
       debugPrint('Gagal memuat preferensi: $error');
 
       if (!mounted) return;
-
-      setState(() {
-        _ready = true;
-      });
+      setState(() => _ready = true);
     }
   }
 
-  // Menyimpan perubahan tema.
   Future<void> _changeTheme(bool value) async {
     try {
       await AppPrefs.setDarkMode(value);
 
       if (!mounted) return;
-
-      setState(() {
-        _darkMode = value;
-      });
+      setState(() => _darkMode = value);
     } catch (error) {
       debugPrint('Gagal menyimpan tema: $error');
     }
   }
 
   @override
+  void dispose() {
+    _router.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (!_ready) {
-      return MaterialApp(
+      return const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
+          body: Center(child: CircularProgressIndicator()),
         ),
       );
     }
 
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Offline Notes',
-
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.indigo,
         ),
         useMaterial3: true,
       ),
-
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.indigo,
@@ -102,29 +131,22 @@ class _NotesAppState extends State<NotesApp> {
         ),
         useMaterial3: true,
       ),
-
       themeMode: _darkMode ? ThemeMode.dark : ThemeMode.light,
-
-      home: NotesPage(
-        darkMode: _darkMode,
-        onThemeChanged: _changeTheme,
-      ),
+      routerConfig: _router,
     );
   }
 }
 
-// ============================================================
-// HALAMAN DAFTAR CATATAN
-// ============================================================
-
 class NotesPage extends StatefulWidget {
   const NotesPage({
     super.key,
-    required this.darkMode,
+    required this.repository,
+    required this.getDarkMode,
     required this.onThemeChanged,
   });
 
-  final bool darkMode;
+  final NoteRepository repository;
+  final bool Function() getDarkMode;
   final ValueChanged<bool> onThemeChanged;
 
   @override
@@ -132,10 +154,7 @@ class NotesPage extends StatefulWidget {
 }
 
 class _NotesPageState extends State<NotesPage> {
-  final NoteRepository _repository = NoteRepository();
-
   List<Note> _notes = [];
-
   bool _loading = true;
   bool _forceOffline = false;
   bool _syncing = false;
@@ -147,56 +166,35 @@ class _NotesPageState extends State<NotesPage> {
     _loadNotes();
   }
 
-  // ----------------------------------------------------------
-  // MEMUAT CATATAN DARI SQLITE
-  // ----------------------------------------------------------
-
   Future<void> _loadNotes() async {
     try {
-      final notes = await _repository.fetchNotes();
+      final notes = await widget.repository.fetchNotes();
 
       if (!mounted) return;
-
       setState(() {
         _notes = notes;
         _loading = false;
       });
     } catch (error) {
       if (!mounted) return;
-
-      setState(() {
-        _loading = false;
-      });
+      setState(() => _loading = false);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Gagal memuat catatan: $error'),
-        ),
+        SnackBar(content: Text('Gagal memuat catatan: $error')),
       );
     }
   }
 
-  // ----------------------------------------------------------
-  // MENAMBAHKAN CATATAN
-  // ----------------------------------------------------------
-
   Future<void> _addNote() async {
-    // Mencegah dialog tambah catatan dibuka berulang kali.
     if (_addingNote) return;
 
-    setState(() {
-      _addingNote = true;
-    });
+    setState(() => _addingNote = true);
 
     try {
-      // Dialog mengelola controller-nya sendiri.
-      // Controller tidak dibuat atau di-dispose di fungsi ini.
       final result = await showDialog<Map<String, String>>(
         context: context,
         barrierDismissible: false,
-        builder: (dialogContext) {
-          return const AddNoteDialog();
-        },
+        builder: (_) => const AddNoteDialog(),
       );
 
       if (!mounted || result == null) return;
@@ -213,18 +211,15 @@ class _NotesPageState extends State<NotesPage> {
         return;
       }
 
-      // Menyimpan catatan melalui repository SQLite.
-      await _repository.addNote(
+      await widget.repository.addNote(
         title: title,
         body: body,
       );
 
       if (!mounted) return;
-
       await _loadNotes();
 
       if (!mounted) return;
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Catatan berhasil disimpan'),
@@ -232,35 +227,24 @@ class _NotesPageState extends State<NotesPage> {
       );
     } catch (error) {
       if (!mounted) return;
-
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Gagal menyimpan catatan: $error'),
-        ),
+        SnackBar(content: Text('Gagal menyimpan catatan: $error')),
       );
     } finally {
       if (mounted) {
-        setState(() {
-          _addingNote = false;
-        });
+        setState(() => _addingNote = false);
       }
     }
   }
 
-  // ----------------------------------------------------------
-  // MENGHAPUS CATATAN
-  // ----------------------------------------------------------
-
   Future<void> _deleteNote(int id) async {
     try {
-      await _repository.deleteNote(id);
+      await widget.repository.deleteNote(id);
 
       if (!mounted) return;
-
       await _loadNotes();
 
       if (!mounted) return;
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Catatan berhasil dihapus'),
@@ -268,23 +252,14 @@ class _NotesPageState extends State<NotesPage> {
       );
     } catch (error) {
       if (!mounted) return;
-
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Gagal menghapus catatan: $error'),
-        ),
+        SnackBar(content: Text('Gagal menghapus catatan: $error')),
       );
     }
   }
 
-  // ----------------------------------------------------------
-  // FORCE OFFLINE
-  // ----------------------------------------------------------
-
   void _changeOffline(bool value) {
-    setState(() {
-      _forceOffline = value;
-    });
+    setState(() => _forceOffline = value);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -297,82 +272,52 @@ class _NotesPageState extends State<NotesPage> {
     );
   }
 
-  // ----------------------------------------------------------
-  // SIMULASI SINKRONISASI
-  // ----------------------------------------------------------
-
   Future<void> _syncNotes() async {
     if (_syncing) return;
 
-    setState(() {
-      _syncing = true;
-    });
+    setState(() => _syncing = true);
 
     try {
       final processed = await syncNotes(
-        _repository,
+        widget.repository,
         forceOffline: _forceOffline,
       );
 
       if (!mounted) return;
-
       await _loadNotes();
 
       if (!mounted) return;
 
-      final String message;
-
-      if (_forceOffline) {
-        message =
-            'Force Offline aktif. Sinkronisasi tidak dijalankan.';
-      } else if (processed == 0) {
-        message = 'Tidak ada catatan yang perlu disinkronkan.';
-      } else {
-        message =
-            '$processed catatan berhasil disinkronkan (simulasi).';
-      }
+      final message = _forceOffline
+          ? 'Force Offline aktif. Sinkronisasi tidak dijalankan.'
+          : processed == 0
+              ? 'Tidak ada catatan yang perlu disinkronkan.'
+              : '$processed catatan berhasil disinkronkan (simulasi).';
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-        ),
+        SnackBar(content: Text(message)),
       );
     } catch (error) {
       if (!mounted) return;
-
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Sinkronisasi gagal: $error'),
-        ),
+        SnackBar(content: Text('Sinkronisasi gagal: $error')),
       );
     } finally {
-      if (mounted) {
-        setState(() {
-          _syncing = false;
-        });
-      }
+      if (mounted) setState(() => _syncing = false);
     }
   }
-
-  // ----------------------------------------------------------
-  // MEMBUKA PENGATURAN
-  // ----------------------------------------------------------
 
   Future<void> _openSettings() async {
     await Navigator.push<void>(
       context,
       MaterialPageRoute<void>(
         builder: (_) => SettingsPage(
-          darkMode: widget.darkMode,
+          darkMode: widget.getDarkMode(),
           onThemeChanged: widget.onThemeChanged,
         ),
       ),
     );
   }
-
-  // ----------------------------------------------------------
-  // TAMPILAN DAFTAR CATATAN
-  // ----------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -392,16 +337,12 @@ class _NotesPageState extends State<NotesPage> {
           ),
         ],
       ),
-
       body: Column(
         children: [
-          // Status offline aplikasi.
           SwitchListTile(
             title: const Text(
               'Force Offline',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               _forceOffline
@@ -409,17 +350,12 @@ class _NotesPageState extends State<NotesPage> {
                   : 'Nonaktif — sinkronisasi diizinkan',
             ),
             secondary: Icon(
-              _forceOffline
-                  ? Icons.cloud_off
-                  : Icons.cloud_done,
+              _forceOffline ? Icons.cloud_off : Icons.cloud_done,
             ),
             value: _forceOffline,
             onChanged: _changeOffline,
           ),
-
           const Divider(height: 1),
-
-          // Tombol sinkronisasi.
           Padding(
             padding: const EdgeInsets.all(12),
             child: SizedBox(
@@ -428,20 +364,14 @@ class _NotesPageState extends State<NotesPage> {
                 onPressed: _syncing ? null : _syncNotes,
                 icon: const Icon(Icons.sync),
                 label: Text(
-                  _syncing
-                      ? 'Memproses...'
-                      : 'Sinkronkan Catatan',
+                  _syncing ? 'Memproses...' : 'Sinkronkan Catatan',
                 ),
               ),
             ),
           ),
-
-          // Isi daftar catatan.
           Expanded(
             child: _loading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? const Center(child: CircularProgressIndicator())
                 : _notes.isEmpty
                     ? const Center(
                         child: Padding(
@@ -449,10 +379,7 @@ class _NotesPageState extends State<NotesPage> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(
-                                Icons.note_alt_outlined,
-                                size: 64,
-                              ),
+                              Icon(Icons.note_alt_outlined, size: 64),
                               SizedBox(height: 12),
                               Text(
                                 'Belum ada catatan',
@@ -481,30 +408,16 @@ class _NotesPageState extends State<NotesPage> {
                               horizontal: 12,
                               vertical: 5,
                             ),
-                            child: ListTile(
-                              leading: Icon(
-                                note.dirty
-                                    ? Icons.cloud_upload_outlined
-                                    : Icons.cloud_done_outlined,
-                                color: note.dirty
-                                    ? Colors.orange
-                                    : Colors.green,
-                              ),
-                              title: Text(note.title),
-                              subtitle: Text(
-                                '${note.body.isEmpty ? 'Tanpa isi' : note.body}\n'
-                                'Status: ${note.dirty ? 'Belum disinkronkan' : 'Tersinkronisasi (simulasi)'}',
-                              ),
-                              isThreeLine: true,
-                              trailing: IconButton(
-                                icon: const Icon(
-                                  Icons.delete_outline,
-                                ),
-                                tooltip: 'Hapus catatan',
-                                onPressed: note.id == null
-                                    ? null
-                                    : () => _deleteNote(note.id!),
-                              ),
+                            child: NoteTile(
+                              note: note,
+                              onTap: () {
+                                if (note.id != null) {
+                                  context.push('/note/${note.id}');
+                                }
+                              },
+                              onDelete: note.id == null
+                                  ? () {}
+                                  : () => _deleteNote(note.id!),
                             ),
                           );
                         },
@@ -512,7 +425,6 @@ class _NotesPageState extends State<NotesPage> {
           ),
         ],
       ),
-
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _addingNote ? null : _addNote,
         icon: const Icon(Icons.add),
@@ -523,16 +435,6 @@ class _NotesPageState extends State<NotesPage> {
     );
   }
 }
-
-// ============================================================
-// DIALOG TAMBAH CATATAN
-// ============================================================
-//
-// Controller dimiliki oleh State dialog ini.
-// Flutter akan memanggil dispose() ketika State dilepas.
-// Dengan begitu, controller tidak langsung dihancurkan
-// oleh fungsi pemanggil ketika dialog sedang ditutup.
-// ============================================================
 
 class AddNoteDialog extends StatefulWidget {
   const AddNoteDialog({super.key});
@@ -548,7 +450,6 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
   @override
   void initState() {
     super.initState();
-
     _titleController = TextEditingController();
     _bodyController = TextEditingController();
   }
@@ -557,7 +458,6 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
   void dispose() {
     _titleController.dispose();
     _bodyController.dispose();
-
     super.dispose();
   }
 
@@ -574,21 +474,16 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
       return;
     }
 
-    // Mengembalikan data ke halaman daftar catatan.
-    // Penyimpanan SQLite dilakukan oleh NotesPage.
-    Navigator.of(context).pop(
-      <String, String>{
-        'title': title,
-        'body': body,
-      },
-    );
+    Navigator.of(context).pop(<String, String>{
+      'title': title,
+      'body': body,
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Tambah Catatan'),
-
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -604,9 +499,7 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
               ),
               onSubmitted: (_) => _save(),
             ),
-
             const SizedBox(height: 12),
-
             TextField(
               controller: _bodyController,
               minLines: 3,
@@ -622,15 +515,11 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
           ],
         ),
       ),
-
       actions: [
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          onPressed: () => Navigator.of(context).pop(),
           child: const Text('Batal'),
         ),
-
         FilledButton.icon(
           onPressed: _save,
           icon: const Icon(Icons.save_outlined),

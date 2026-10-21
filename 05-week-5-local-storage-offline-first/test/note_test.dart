@@ -1,38 +1,73 @@
-
+import 'package:week5_offline_notes/data/providers.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:week5_offline_notes/data/local/note.dart';
+import 'package:week5_offline_notes/data/repositories/note_repository.dart';
+
+class FakeNoteRepository extends NoteRepository {
+  FakeNoteRepository({this.items = const [], this.throwError = false})
+      : super(openDb: () => throw UnimplementedError());
+
+  final List<Note> items;
+  final bool throwError;
+
+  @override
+  Future<List<Note>> fetchNotes() async {
+    if (throwError) throw Exception('db locked (simulasi)');
+    return items;
+  }
+
+  @override
+  Future<int> countDirty() =>
+      Future.value(items.where((n) => n.dirty).length);
+}
 
 void main() {
-  group('Note model', () {
-    test('Note dapat dikonversi ke Map dan kembali', () {
-      final note = Note(
-        id: 1,
-        title: 'Tes Offline',
-        body: 'Pengujian SQLite',
-        updatedAt: DateTime.parse('2026-10-12T10:00:00Z'),
-        dirty: true,
-      );
+  test('fromMap aman terhadap field yang hilang', () {
+    final note = Note.fromMap({'title': 'Belanja'});
+    expect(note.title, 'Belanja');
+    expect(note.body, '');
+    expect(note.dirty, isFalse);
+  });
 
-      final result = Note.fromMap(note.toMap());
+  test('flag dirty bertahan pada serialisasi', () {
+    final note = Note(
+      title: 'a',
+      updatedAt: DateTime(2026, 9, 18),
+      dirty: true,
+    );
+    final restored = Note.fromMap(note.toMap());
+    expect(restored.dirty, isTrue);
+  });
 
-      expect(result.id, 1);
-      expect(result.title, 'Tes Offline');
-      expect(result.body, 'Pengujian SQLite');
-      expect(result.dirty, true);
-      expect(result.updatedAt, note.updatedAt);
-    });
+  test('provider sukses dengan repository palsu', () async {
+    final container = ProviderContainer(
+      overrides: [
+        noteRepositoryProvider.overrideWithValue(
+          FakeNoteRepository(items: [
+            Note(title: 'Tes', updatedAt: DateTime.now()),
+          ]),
+        ),
+      ],
+    );
+    addTearDown(container.dispose);
+    final notes = await container.read(notesProvider.future);
+    expect(notes.length, 1);
+    expect(notes.first.title, 'Tes');
+  });
 
-    test('Nilai default digunakan jika data tidak lengkap', () {
-      final note = Note.fromMap({
-        'id': 2,
-        'title': 'Catatan',
-        'updated_at': '2026-10-12T10:00:00Z',
-        'dirty': 0,
-      });
-
-      expect(note.title, 'Catatan');
-      expect(note.body, '');
-      expect(note.dirty, false);
-    });
+  test('provider error dengan repository palsu', () async {
+    final container = ProviderContainer(
+      overrides: [
+        noteRepositoryProvider.overrideWithValue(
+          FakeNoteRepository(throwError: true),
+        ),
+      ],
+    );
+    addTearDown(container.dispose);
+    await expectLater(
+      container.read(notesProvider.future),
+      throwsA(isA<Exception>()),
+    );
   });
 }

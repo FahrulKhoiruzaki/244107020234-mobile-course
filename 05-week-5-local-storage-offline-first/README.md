@@ -80,3 +80,16 @@
    SQLite dipilih untuk menyimpan catatan karena mendukung operasi CRUD dan penyimpanan data terstruktur. SharedPreferences digunakan untuk preferensi sederhana. Atribut `dirty` dan `updatedAt` disertakan untuk mendukung proses sinkronisasi. Sinkronisasi saat ini masih berupa simulasi dan implementasi belum menggunakan stream real-time.
 
 
+## Refactoring, testing, dan error umum
+
+| flutter_analyze | flutter_test |
+|:---:|:---:|
+| <img src="screenshots/refac_analyze.png" width="250"> | <img src="screenshots/refac_test.png" width="250"> |
+
+### Checklist verifikasi mandiri
+
+- [x] UI tidak memanggil SQLite/SharedPreferences langsung; semua lewat repository + provider.
+- [x] Aplikasi penuh berfungsi dalam mode pesawat: baca, tambah, hapus catatan.
+- [x] Badge dirty akurat sebelum/sesudah sync; cache posts tampil tanpa internet.
+- [x] `flutter analyze` tanpa issue dan semua test lulus.
+- [x] Hasil AI diverifikasi dan didokumentasikan pada folder `docs/`.
