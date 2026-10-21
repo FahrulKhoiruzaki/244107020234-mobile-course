@@ -1,71 +1,48 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/prefs.dart';
+import '../data/providers.dart';
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({
-    super.key,
-    required this.darkMode,
-    required this.onThemeChanged,
-  });
-
-  final bool darkMode;
-  final ValueChanged<bool> onThemeChanged;
+class SettingsPage extends ConsumerWidget {
+  const SettingsPage({super.key});
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
-  DateTime? _lastOpened;
-  bool _loading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadLastOpened();
-  }
-
-  Future<void> _loadLastOpened() async {
-    final value = await AppPrefs.getLastOpened();
-
-    if (!mounted) return;
-
-    setState(() {
-      _lastOpened = value;
-      _loading = false;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final darkMode = ref.watch(darkModeProvider);
+    final lastOpened = ref.watch(lastOpenedProvider);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pengaturan'),
-      ),
-      body: ListView(
-        children: [
-          SwitchListTile(
-            title: const Text('Mode Gelap'),
-            subtitle: const Text(
-              'Simpan preferensi tema aplikasi',
+      appBar: AppBar(title: const Text('Pengaturan')),
+      body: darkMode.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, _) => Center(child: Text('Gagal memuat tema: $error')),
+        data: (value) => ListView(
+          children: [
+            SwitchListTile(
+              title: const Text('Mode Gelap'),
+              subtitle: const Text('Simpan preferensi tema aplikasi'),
+              value: value,
+              onChanged: (next) => ref.read(darkModeProvider.notifier).toggle(next),
             ),
-            value: widget.darkMode,
-            onChanged: widget.onThemeChanged,
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.access_time),
-            title: const Text('Terakhir Dibuka'),
-            subtitle: Text(
-              _loading
-                  ? 'Memuat...'
-                  : _lastOpened?.toLocal().toString() ??
-                      'Belum ada data',
+            const Divider(),
+            lastOpened.when(
+              loading: () => const ListTile(
+                leading: Icon(Icons.access_time),
+                title: Text('Terakhir Dibuka'),
+                subtitle: Text('Memuat...'),
+              ),
+              error: (error, _) => ListTile(
+                leading: const Icon(Icons.access_time),
+                title: const Text('Terakhir Dibuka'),
+                subtitle: Text('Gagal memuat: $error'),
+              ),
+              data: (value) => ListTile(
+                leading: const Icon(Icons.access_time),
+                title: const Text('Terakhir Dibuka'),
+                subtitle: Text(value ?? 'Belum ada data'),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

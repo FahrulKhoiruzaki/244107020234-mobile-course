@@ -1,62 +1,36 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/repositories/note_repository.dart';
+import '../data/providers.dart';
 
-class NoteDetailPage extends StatelessWidget {
-  const NoteDetailPage({
-    super.key,
-    required this.noteId,
-    required this.repository,
-  });
-
+class NoteDetailPage extends ConsumerWidget {
+  const NoteDetailPage({super.key, required this.noteId});
   final int noteId;
-  final NoteRepository repository;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final note = ref.watch(noteDetailProvider(noteId));
     return Scaffold(
       appBar: AppBar(title: const Text('Detail Catatan')),
-      body: FutureBuilder(
-        future: repository.fetchNoteById(noteId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+      body: note.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, _) => Center(child: Text('Gagal memuat catatan: $error')),
+        data: (value) {
+          if (value == null) {
+            return const Center(child: Text('Catatan tidak ditemukan.'));
           }
-
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text('Gagal memuat catatan.'),
-            );
-          }
-
-          final note = snapshot.data;
-
-          if (note == null) {
-            return const Center(
-              child: Text('Catatan tidak ditemukan.'),
-            );
-          }
-
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              Text(
-                note.title,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
+              Text(value.title, style: Theme.of(context).textTheme.headlineSmall),
               const SizedBox(height: 12),
-              Text(
-                note.body.isEmpty ? 'Tidak ada isi catatan.' : note.body,
-              ),
+              Text(value.body.isEmpty ? 'Tidak ada isi catatan.' : value.body),
               const SizedBox(height: 16),
-              Text('Diperbarui: ${note.updatedAt.toLocal()}'),
+              Text('Diperbarui: ${value.updatedAt.toLocal()}'),
               const SizedBox(height: 8),
-              Text(
-                note.dirty
-                    ? 'Status: Belum tersinkron'
-                    : 'Status: Tersinkron (simulasi)',
-              ),
+              Text(value.dirty
+                  ? 'Status: Belum tersinkron'
+                  : 'Status: Tersinkron (simulasi)'),
             ],
           );
         },

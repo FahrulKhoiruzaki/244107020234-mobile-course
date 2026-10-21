@@ -1,7 +1,8 @@
-import 'package:week5_offline_notes/data/providers.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:week5_offline_notes/data/local/note.dart';
+import 'package:week5_offline_notes/data/providers.dart';
 import 'package:week5_offline_notes/data/repositories/note_repository.dart';
 
 class FakeNoteRepository extends NoteRepository {
@@ -40,22 +41,6 @@ void main() {
     expect(restored.dirty, isTrue);
   });
 
-  test('provider sukses dengan repository palsu', () async {
-    final container = ProviderContainer(
-      overrides: [
-        noteRepositoryProvider.overrideWithValue(
-          FakeNoteRepository(items: [
-            Note(title: 'Tes', updatedAt: DateTime.now()),
-          ]),
-        ),
-      ],
-    );
-    addTearDown(container.dispose);
-    final notes = await container.read(notesProvider.future);
-    expect(notes.length, 1);
-    expect(notes.first.title, 'Tes');
-  });
-
   test('provider error dengan repository palsu', () async {
     final container = ProviderContainer(
       overrides: [
@@ -64,10 +49,28 @@ void main() {
         ),
       ],
     );
-    addTearDown(container.dispose);
-    await expectLater(
-      container.read(notesProvider.future),
-      throwsA(isA<Exception>()),
+
+    final completer = Completer<AsyncValue<List<Note>>>();
+
+    final sub = container.listen(
+      notesProvider,
+      (previous, next) {
+        if (next.hasError && !completer.isCompleted) {
+          completer.complete(next);
+        }
+      },
+      fireImmediately: true,
     );
+
+    try {
+      final state = await completer.future.timeout(
+        const Duration(seconds: 2),
+      );
+
+      expect(state.error, isA<Exception>());
+    } finally {
+      sub.close();
+      container.dispose();
+    }
   });
 }

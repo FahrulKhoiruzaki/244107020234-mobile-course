@@ -93,3 +93,41 @@
 - [x] Badge dirty akurat sebelum/sesudah sync; cache posts tampil tanpa internet.
 - [x] `flutter analyze` tanpa issue dan semua test lulus.
 - [x] Hasil AI diverifikasi dan didokumentasikan pada folder `docs/`.
+
+## Tugas dan Refleksi
+
+| flutter_analyze | flutter_test |
+|:---:|:---:|
+| <img src="screenshots/tugas_analyze.png" width="250"> | <img src="screenshots/tugas_test.png" width="250"> |
+
+### Hasil
+
+| halaman_awal |
+|:---:|
+| <img src="screenshots/tugas_1.png" width="250"> |
+
+| menambahkan_catatan_offline |
+|:---:|
+| <img src="screenshots/tugas_2.png" width="250"> |
+
+| menyinkronkan |
+|:---:|
+| <img src="screenshots/tugas_3.png" width="250"> |
+
+| mode_gelap |
+|:---:|
+| <img src="screenshots/tugas_4.png" width="250"> |
+
+### Refleksi
+
+- **Mengapa daftar catatan tidak boleh disimpan di SharedPreferences? Apa yang rusak jika aturan ini dilanggar?**  
+  Karena SharedPreferences digunakan untuk data sederhana berupa key-value, bukan data terstruktur seperti daftar catatan. Jika dipaksakan, pengelolaan CRUD, pencarian, dan perubahan data menjadi lebih sulit serta tidak efisien.
+
+- **Kapan cache-first cukup, dan kapan membutuhkan strategi lain?**
+  Cache-first cukup ketika data lokal masih dapat digunakan dan tidak harus selalu terbaru, seperti catatan. Untuk data yang harus selalu terbaru, seperti harga real-time, lebih tepat menggunakan network-first agar aplikasi mengambil data terbaru dari server.
+
+- **Bagaimana dirty flag berubah menjadi antrean sync tanpa memblokir UI? Kapan antrean terpisah (tabel outbox) menjadi perlu?**
+  Data yang memiliki `dirty = true` dianggap sebagai data yang perlu disinkronkan. Proses sync dapat dijalankan secara asynchronous di background sehingga UI tetap dapat digunakan. Tabel outbox diperlukan jika jumlah perubahan semakin banyak atau membutuhkan antrean operasi yang lebih terstruktur dan dapat menyimpan setiap operasi yang belum berhasil dikirim.
+
+- **Bagian mana dari rekomendasi AI yang ditolak, dan mengapa?**
+  Rekomendasi AI yang menyimpan daftar catatan di SharedPreferences ditolak karena tidak sesuai untuk data terstruktur dan operasi CRUD. Untuk catatan, SQLite lebih sesuai karena mendukung tabel, query, dan pengelolaan data yang lebih baik.
