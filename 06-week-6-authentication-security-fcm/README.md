@@ -76,3 +76,18 @@ Pengujian dilakukan dengan menjalankan aplikasi Campus Notify, kemudian memindah
 | console klik |
 |:---:|
 | <img src="screenshot/ai_console_klik.png" width="250"> |
+
+## Refactoring, testing, dan error umum
+
+| test  |
+|:---:|
+| <img src="screenshot/refac_test.png" width="250"> |
+
+## Checklist Verifikasi Mandiri
+
+- [x] Token disimpan menggunakan `flutter_secure_storage`, bukan SharedPreferences. Tampilan token pada log dibatasi dan tidak menampilkan token secara penuh.
+- [x] Mekanisme refresh token diperiksa. Pengujian refresh gagal berhasil membuktikan bahwa token dihapus sehingga pengguna harus login kembali. Mekanisme refresh sukses dan retry satu kali belum diuji secara terpisah.
+- [x] Ketiga kondisi aplikasi (foreground, background, dan terminated) telah diuji. Notifikasi berhasil diterima dan klik notifikasi mengarahkan ke rute yang benar.
+- [x] Topik digunakan untuk broadcast, sedangkan token perangkat digunakan untuk pengiriman pesan personal.
+- [x] Seluruh 11 pengujian berhasil dijalankan menggunakan `flutter test`.
+- [ ] `flutter analyze` bersih tanpa informasi deprecated. Saat ini masih terdapat 2 informasi deprecated pada `getToken()` dan `onTokenRefresh` di `push_service.dart`.

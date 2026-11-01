@@ -29,7 +29,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     try {
       final dio = Dio(
         BaseOptions(
-          baseUrl: 'http://192.168.194.245',
+          baseUrl: 'http://192.168.194.245:8081',
           connectTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 10),
         ),
@@ -71,6 +71,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           debugPrint('Registrasi perangkat berhasil');
         },
       );
+
     } catch (e) {
       debugPrint('FCM initialization error: $e');
     }

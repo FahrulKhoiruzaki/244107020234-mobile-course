@@ -1,55 +1,15 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:go_router/go_router.dart';
 
 import 'firebase_options.dart';
+import 'routes.dart';
+
+import 'providers/auth_provider.dart';
 import 'pages/login_page.dart';
 import 'pages/home_page.dart';
 import 'pages/announcement_page.dart';
-import 'providers/auth_provider.dart';
-import 'messaging/push_service.dart';
-
-GoRouter createRouter(ProviderContainer container) {
-  final router = GoRouter(
-    initialLocation: '/',
-    redirect: (context, state) {
-      final loggedIn =
-          container.read(authStateProvider).value ?? false;
-
-      final goingLogin = state.matchedLocation == '/login';
-
-      if (!loggedIn && !goingLogin) return '/login';
-      if (loggedIn && goingLogin) return '/';
-
-      return null;
-    },
-    routes: [
-      GoRoute(
-        path: '/login',
-        builder: (context, state) => const LoginPage(),
-      ),
-      GoRoute(
-        path: '/',
-        builder: (context, state) => const HomePage(),
-      ),
-      GoRoute(
-        path: '/pengumuman/:id',
-        builder: (context, state) => AnnouncementPage(
-          id: state.pathParameters['id'] ?? '',
-        ),
-      ),
-    ],
-  );
-
-  container.listen(authStateProvider, (previous, next) {
-    router.refresh();
-  });
-
-  return router;
-}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,31 +18,19 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FirebaseMessaging.onBackgroundMessage(
-    firebaseMessagingBackgroundHandler,
-  );
-
-  await PushService.initializeLocalNotifications();
-
   final container = ProviderContainer();
   final router = createRouter(container);
-
-  await PushService.initMessageHandlers(
-    go: (route) {
-      router.go(route);
-    },
-  );
 
   runApp(
     UncontrolledProviderScope(
       container: container,
-      child: CampusNotifyApp(router: router),
+      child: MyApp(router: router),
     ),
   );
 }
 
-class CampusNotifyApp extends StatelessWidget {
-  const CampusNotifyApp({
+class MyApp extends StatelessWidget {
+  const MyApp({
     super.key,
     required this.router,
   });
@@ -94,13 +42,54 @@ class CampusNotifyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Campus Notify',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-        ),
-        useMaterial3: true,
-      ),
       routerConfig: router,
     );
   }
+}
+
+GoRouter createRouter(ProviderContainer container) {
+  final router = GoRouter(
+    initialLocation: AppRoutes.home,
+    redirect: (context, state) {
+      final loggedIn =
+          container.read(authStateProvider).value ?? false;
+
+      final goingLogin =
+          state.matchedLocation == AppRoutes.login;
+
+      if (!loggedIn && !goingLogin) {
+        return AppRoutes.login;
+      }
+
+      if (loggedIn && goingLogin) {
+        return AppRoutes.home;
+      }
+
+      return null;
+    },
+    routes: [
+      GoRoute(
+        path: AppRoutes.login,
+        builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.home,
+        builder: (context, state) => const HomePage(),
+      ),
+      GoRoute(
+        path: AppRoutes.announcement,
+        builder: (context, state) {
+          return AnnouncementPage(
+            id: state.pathParameters['id'] ?? '',
+          );
+        },
+      ),
+    ],
+  );
+
+  container.listen(authStateProvider, (previous, next) {
+    router.refresh();
+  });
+
+  return router;
 }
