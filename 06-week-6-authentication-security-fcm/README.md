@@ -58,3 +58,21 @@ Pengujian dilakukan dengan menjalankan aplikasi Campus Notify, kemudian memindah
 |:---:|
 | <img src="screenshot/p3_console.png" width="250"> |
 
+
+## AI Challenge
+
+| notifikasi foreground  |
+|:---:|
+| <img src="screenshot/ai_foreground.png" width="250"> |
+
+| notifikasi subscribe  |
+|:---:|
+| <img src="screenshot/ai_subscribe.png" width="250"> |
+
+| klik notifikasi |
+|:---:|
+| <img src="screenshot/ai_klik_banner.png" width="250"> |
+
+| console klik |
+|:---:|
+| <img src="screenshot/ai_console_klik.png" width="250"> |
