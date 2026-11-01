@@ -44,4 +44,17 @@ Pengujian dilakukan dengan menjalankan aplikasi Campus Notify, kemudian memindah
 
 **Hasil:** Berhasil. Notifikasi dapat diterima dan dibuka ketika aplikasi berada dalam kondisi background.
 
-## Praktikum 3: FCM, permission, dan token lifecycle
+## Praktikum 3: Payload, tiga app state, klik dan topik
+
+| notifikasi |
+|:---:|
+| <img src="screenshot/p3_notif.png" width="250"> |
+
+| klik banner |
+|:---:|
+| <img src="screenshot/p3_route.png" width="250"> |
+
+| console  |
+|:---:|
+| <img src="screenshot/p3_console.png" width="250"> |
+

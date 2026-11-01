@@ -22,6 +22,8 @@ class PushService {
 
   static StreamSubscription<String>? _tokenSubscription;
 
+  static void Function(String route)? _onNavigate;
+
   static const AndroidNotificationChannel _channel =
       AndroidNotificationChannel(
     'campus_notify_channel',
@@ -51,7 +53,9 @@ class PushService {
     await _localNotifications.initialize(
       settings: initializationSettings,
       onDidReceiveNotificationResponse: (response) {
-        debugPrint('Notifikasi diklik: ${response.payload}');
+        final route = response.payload ?? '/';
+        debugPrint('Notifikasi diklik: $route');
+        _onNavigate?.call(route);
       },
     );
 
@@ -67,10 +71,12 @@ class PushService {
 
     if (notification == null) return;
 
+    final route = message.data['route'] ?? '/';
+
     await _localNotifications.show(
       id: message.hashCode,
-      title: notification.title,
-      body: notification.body,
+      title: notification.title ?? 'Pengumuman',
+      body: notification.body ?? '',
       notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
           _channel.id,
@@ -81,27 +87,33 @@ class PushService {
           icon: '@mipmap/ic_launcher',
         ),
       ),
-      payload: message.data.toString(),
+      payload: route,
     );
   }
 
-  static Future<void> initMessageHandlers() async {
+  static Future<void> initMessageHandlers({
+    required void Function(String route) go,
+  }) async {
+    _onNavigate = go;
+
     FirebaseMessaging.onMessage.listen((message) async {
       debugPrint('FCM diterima saat foreground');
       await showNotification(message);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      debugPrint('Notifikasi dibuka dari background');
-      debugPrint('Data: ${message.data}');
+      final route = message.data['route'] ?? '/';
+      debugPrint('Notifikasi dibuka dari background: $route');
+      go(route);
     });
 
     final initialMessage =
         await _messaging.getInitialMessage();
 
     if (initialMessage != null) {
-      debugPrint('Aplikasi dibuka dari notifikasi terminated');
-      debugPrint('Data: ${initialMessage.data}');
+      final route = initialMessage.data['route'] ?? '/';
+      debugPrint('Aplikasi dibuka dari terminated: $route');
+      go(route);
     }
   }
 

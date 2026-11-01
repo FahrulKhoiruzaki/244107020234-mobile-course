@@ -63,10 +63,15 @@ Future<void> main() async {
   );
 
   await PushService.initializeLocalNotifications();
-  await PushService.initMessageHandlers();
 
   final container = ProviderContainer();
   final router = createRouter(container);
+
+  await PushService.initMessageHandlers(
+    go: (route) {
+      router.go(route);
+    },
+  );
 
   runApp(
     UncontrolledProviderScope(
