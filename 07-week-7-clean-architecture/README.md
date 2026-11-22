@@ -55,6 +55,26 @@ Dokumentasi: [Step 5 — Presentation, DI, dan Verifikasi](docs/step-5-presentat
 
 `dart format` dan pemeriksaan boundary Domain/Core/presentation dijalankan. `flutter analyze` dan `flutter test` dicoba tetapi **BLOCKED** karena `pubspec.yaml` dan metadata dependency tidak tersedia; keduanya tidak diklaim PASS. Screenshot tidak dibuat karena aplikasi tidak dapat dijalankan tanpa metadata Flutter/dependency. Step 6 / AI Challenge belum dimulai.
 
+### Tahap 5 — Step 6: AI Challenge
+
+**Status:** selesai pada scope dokumentasi dan analisis proposal arsitektur AI. Tidak ada source code aplikasi, test, dependency, `pubspec`, konfigurasi, atau file Week 6 yang diubah.
+
+Dokumentasi: [Step 6 — AI Challenge](docs/step-6-ai-challenge.md)
+
+Step 6 mendokumentasikan prompt AI, excerpt output awal yang grounded pada source Campus Notify Week 6, perbandingan dengan keputusan final yang sudah diterapkan pada feature `notes`, alasan menerima/menolak/menyesuaikan proposal, serta tepat tiga verification command dengan hasil aktual. Auth dan announcements **tidak diklaim sudah dimigrasikan**; target Week 7 tetap menjadi implementasi notes dari Step 4–5.
+
+Verifikasi tambahan:
+
+- `dart analyze` pada `lib/core` dan Domain notes: **PASS**, `No issues found!`.
+- Tiga scan `rg`: dijalankan dan hasil aktual dicatat di dokumentasi; check 2 menemukan field bisnis `dirty`, sedangkan check 3 menemukan wiring concrete repository di provider composition boundary yang disengaja.
+- `flutter analyze`: **BLOCKED**, karena package/dependency tidak dapat di-resolve tanpa metadata Flutter.
+- `flutter test`: **BLOCKED**, karena target tidak memiliki `pubspec.yaml`.
+- Screenshot UI before/after: **BLOCKED**, karena target tidak runnable. Tidak ada screenshot palsu, placeholder, atau screenshot Week 6 yang direlabel sebagai bukti Stage 5.
+
+Bukti visual alternatif tidak dibuat karena Chrome DevTools tidak tersedia dan tidak ada aplikasi/preview target yang dapat ditampilkan secara valid. Output command aktual dicatat sebagai teks, bukan diklaim sebagai screenshot aplikasi.
+
+Step 7 / Tahap 6 belum dimulai.
+
 
 ## Riwayat tahap sebelumnya
 
