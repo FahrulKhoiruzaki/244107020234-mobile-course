@@ -143,3 +143,15 @@ Tahap ini mendokumentasikan SOLID, tiga layer Clean Architecture, arah dependens
 Dokumentasi: [Konsep SOLID dan Clean Architecture](docs/clean-architecture-concepts.md)
 
 Tidak ada source code yang diubah dan tidak ada refactoring pada tahap ini. Screenshot test tidak dibuat karena tahap ini bersifat konseptual. `flutter analyze` dan `flutter test` berstatus **BLOCKED** karena `pubspec.yaml` serta metadata dependency tidak tersedia di repository; keduanya tidak diklaim PASS.
+
+### Tahap 2 — Step 3: Audit layer project lama
+
+**Status:** selesai sebagai audit dan dokumentasi; refactoring belum dimulai.
+
+Project Minggu 5 dipetakan ke presentation, domain/data yang masih bercampur, serta data/infrastruktur. Audit menemukan entity `Note` masih menangani mapping SQLite, repository masih mencampur kontrak dan implementasi, provider masih membuat dependency konkret, dan beberapa page/widget masih bergantung langsung pada tipe dari folder data.
+
+Dokumentasi lengkap, hasil tiga pencarian arsitektur, daftar temuan, rencana refactor, dan rancangan feature-first tersedia di [Audit arsitektur project lama](docs/architecture-audit.md).
+
+Tiga pencarian Codelab telah dijalankan. Pencarian akses infrastruktur dan parsing pada `lib/pages`/`lib/widgets` tidak menghasilkan output. Pencarian path `lib/providers` tidak dapat dijalankan persis karena project menggunakan `lib/data/providers.dart`; pencarian yang disesuaikan menemukan wiring repository dan Dio di provider data. Tidak ada source code yang diubah pada tahap ini.
+
+`flutter analyze` dan `flutter test` tetap **BLOCKED** karena `pubspec.yaml` serta metadata dependency tidak tersedia di repository. Screenshot tidak dibuat karena bukti tahap ini berupa tabel dan output pencarian tekstual.
