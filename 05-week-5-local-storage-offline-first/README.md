@@ -150,6 +150,23 @@ Tidak ada source code yang diubah dan tidak ada refactoring pada tahap ini. Scre
 
 Project Minggu 5 dipetakan ke presentation, domain/data yang masih bercampur, serta data/infrastruktur. Audit menemukan entity `Note` masih menangani mapping SQLite, repository masih mencampur kontrak dan implementasi, provider masih membuat dependency konkret, dan beberapa page/widget masih bergantung langsung pada tipe dari folder data.
 
+#### Tabel pemetaan file
+
+| File | Layer saat ini | Temuan utama |
+|---|---|---|
+| `lib/main.dart` | Presentation/composition | Root app dan routing mengimpor provider dari `data`. |
+| `lib/pages/note_detail_page.dart` | Presentation | Memakai tipe data langsung dan memformat `updatedAt` di UI. |
+| `lib/pages/posts_page.dart` | Presentation | Merender `Map<String, dynamic>` mentah dari cache. |
+| `lib/pages/settings_page.dart` | Presentation | Bergantung langsung pada `data/providers.dart`. |
+| `lib/widgets/note_tile.dart` | Presentation | Mengimpor `data/local/note.dart`, yang juga menangani mapping SQLite. |
+| `lib/data/local/db.dart` | Data | Membuka SQLite dan mendefinisikan schema database. |
+| `lib/data/local/note.dart` | Data/domain tercampur | `Note` memiliki field bisnis sekaligus `toMap`/`fromMap` dan parsing tanggal. |
+| `lib/data/prefs.dart` | Data | Mengakses SharedPreferences tanpa kontrak domain terpisah. |
+| `lib/data/repositories/note_repository.dart` | Data | Kontrak dan implementasi repository, query, serta mapping masih bercampur. |
+| `lib/data/providers.dart` | DI/state di folder data | Membuat repository/Dio konkret dan menggabungkan provider dengan operasi fitur. |
+| `lib/data/sync.dart` | Data/infrastruktur | Mencampur Dio, SQLite, JSON, cache-first, dan sinkronisasi. |
+| `test/note_test.dart` | Test | Fake mewarisi repository SQLite konkret. |
+
 Dokumentasi lengkap, hasil tiga pencarian arsitektur, daftar temuan, rencana refactor, dan rancangan feature-first tersedia di [Audit arsitektur project lama](docs/architecture-audit.md).
 
 Tiga pencarian Codelab telah dijalankan. Pencarian akses infrastruktur dan parsing pada `lib/pages`/`lib/widgets` tidak menghasilkan output. Pencarian path `lib/providers` tidak dapat dijalankan persis karena project menggunakan `lib/data/providers.dart`; pencarian yang disesuaikan menemukan wiring repository dan Dio di provider data. Tidak ada source code yang diubah pada tahap ini.
