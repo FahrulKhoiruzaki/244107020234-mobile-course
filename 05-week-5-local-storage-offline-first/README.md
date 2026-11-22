@@ -131,3 +131,15 @@
 
 - **Bagian mana dari rekomendasi AI yang ditolak, dan mengapa?**
   Rekomendasi AI yang menyimpan daftar catatan di SharedPreferences ditolak karena tidak sesuai untuk data terstruktur dan operasi CRUD. Untuk catatan, SQLite lebih sesuai karena mendukung tabel, query, dan pengelolaan data yang lebih baik.
+
+## Week 7 — Clean Architecture
+
+### Tahap 1 — Step 1 + Step 2: Konsep SOLID dan Clean Architecture
+
+**Status:** selesai sebagai dokumentasi konseptual.
+
+Tahap ini mendokumentasikan SOLID, tiga layer Clean Architecture, arah dependensi, feature-first dan layer-first, entity dan model, kontrak serta implementasi repository, Dependency Injection, pertimbangan use case, trade-off, dan keputusan arsitektur untuk refactoring tahap berikutnya.
+
+Dokumentasi: [Konsep SOLID dan Clean Architecture](docs/clean-architecture-concepts.md)
+
+Tidak ada source code yang diubah dan tidak ada refactoring pada tahap ini. Screenshot test tidak dibuat karena tahap ini bersifat konseptual. `flutter analyze` dan `flutter test` berstatus **BLOCKED** karena `pubspec.yaml` serta metadata dependency tidak tersedia di repository; keduanya tidak diklaim PASS.
