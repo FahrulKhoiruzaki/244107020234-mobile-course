@@ -13,7 +13,7 @@ Tahap ini hanya mengerjakan Step 5:
 - menambahkan pengujian use case dengan fake repository;
 - melakukan pemeriksaan boundary dan verifikasi yang tersedia.
 
-Step 6 / AI Challenge tidak dimulai. Refactoring posts, settings, sinkronisasi, dan kontrak CRUD lain tidak diperluas karena berada di luar scope Step 5.
+Pada akhir Tahap 4, Step 6 / AI Challenge belum dimulai. Catatan tersebut adalah historical scope; dokumentasi Step 6 kini tersedia di [step-6-ai-challenge.md](step-6-ai-challenge.md). Refactoring posts, settings, sinkronisasi, dan kontrak CRUD lain tidak diperluas karena berada di luar scope Step 5.
 
 ## Struktur feature setelah Step 5
 
@@ -151,4 +151,4 @@ Screenshot tidak dibuat karena aplikasi tidak dapat dijalankan tanpa metadata Fl
 - [ ] Analyze bersih — BLOCKED oleh metadata dependency.
 - [ ] Test lulus — BLOCKED oleh metadata dependency.
 - [ ] Screenshot before/after — tidak tersedia karena aplikasi tidak dapat dijalankan.
-- [x] Step 6 tidak dimulai.
+- [x] Pada akhir Tahap 4, Step 6 belum dimulai (historical status; kini sudah didokumentasikan).

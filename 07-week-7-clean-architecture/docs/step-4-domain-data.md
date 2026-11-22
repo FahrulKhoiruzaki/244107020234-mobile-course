@@ -16,15 +16,15 @@ Yang dikerjakan:
 - menerjemahkan error persistence menjadi `Failure` yang eksplisit;
 - menginjeksikan fungsi pembuka database ke repository.
 
-Yang belum dikerjakan:
+Yang belum dikerjakan pada akhir Tahap 3:
+
+Catatan ini adalah historical scope. Pada saat itu item berikut belum dikerjakan dan kemudian menjadi scope Step 5 / Tahap 4:
 
 - refactoring page/widget;
 - provider dan Dependency Injection Riverpod;
 - pemindahan state notifier;
 - integrasi use case ke presentation;
 - refactoring posts/settings dan sinkronisasi.
-
-Item tersebut merupakan scope Step 5 / Tahap 4.
 
 ## Struktur feature-first
 

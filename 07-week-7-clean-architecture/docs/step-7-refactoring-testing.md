@@ -11,7 +11,7 @@ Step 7 menerapkan pola Clean Architecture ke feature kedua, menambahkan helper p
 - tidak ada endpoint atau schema Campus Notify announcements yang dapat diverifikasi di target ini;
 - Week 6 tidak disentuh karena memiliki perubahan lokal existing;
 - `pubspec.yaml`, lockfile, dependency, dan konfigurasi tidak dibuat atau diubah;
-- Step 8 belum dimulai.
+- Step 8 belum dimulai pada akhir Tahap 6; finalisasi kini tersedia di [step-8-finalization.md](step-8-finalization.md).
 
 Karena itu, feature announcements harus dibaca sebagai **local cached-announcements adapter**, bukan klaim integrasi backend Campus Notify.
 
@@ -278,4 +278,4 @@ Percobaan screenshot alternatif hanya boleh disimpan jika menghasilkan file aktu
 - [ ] `flutter analyze` PASS — blocked oleh tidak adanya `pubspec.yaml`.
 - [ ] `flutter test` PASS — blocked oleh tidak adanya `pubspec.yaml`.
 - [ ] Screenshot runtime — blocked karena target tidak runnable.
-- [x] Step 8 belum dimulai.
+- [x] Step 8 belum dimulai pada akhir Tahap 6 (historical status; kini sudah selesai).

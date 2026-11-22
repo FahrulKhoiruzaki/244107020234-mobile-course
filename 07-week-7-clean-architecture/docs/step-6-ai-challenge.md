@@ -11,7 +11,7 @@ Codelab menyebut project `campus_notify`. Pada repository ini, source Campus Not
 - source Week 6 dibaca sebagai bahan audit read-only;
 - arsitektur `notes` pada target Week 7 menjadi referensi keputusan final yang sudah diterapkan pada Step 4–5;
 - migrasi auth dan announcements tidak diklaim sudah diimplementasikan pada Step 6;
-- Step 7 tidak dimulai.
+- Pada akhir Tahap 5, Step 7 belum dimulai; implementasinya kini tersedia di [step-7-refactoring-testing.md](step-7-refactoring-testing.md).
 
 Tidak terdapat `pubspec.yaml` atau metadata dependency Flutter pada target Week 7. Aplikasi target tidak dapat dijalankan sebagai project Flutter mandiri, sehingga bukti visual UI before/after tidak tersedia dan tidak dibuat-buat.
 
@@ -280,4 +280,4 @@ Jika checkout Flutter runnable disediakan kemudian, capture yang sesuai harus di
 - [x] Tidak ada Week 5/Week 6/configuration yang diubah.
 - [x] Tidak ada klaim test, runtime, atau screenshot palsu.
 - [ ] Screenshot UI before/after — BLOCKED karena target tidak runnable.
-- [x] Step 7 belum dimulai.
+- [x] Pada akhir Tahap 5, Step 7 belum dimulai (historical status; kini sudah selesai).
