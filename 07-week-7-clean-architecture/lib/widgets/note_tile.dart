@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
 
-import '../data/local/note.dart';
+import '../features/notes/domain/entities/note.dart';
 
 class NoteTile extends StatelessWidget {
   const NoteTile({

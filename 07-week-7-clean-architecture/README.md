@@ -45,7 +45,16 @@ presentation → domain ← data
 - `flutter test`: belum dapat dijalankan secara valid karena alasan yang sama; tidak diklaim PASS.
 - Screenshot: tidak dibuat. Tidak ada aplikasi yang dapat dijalankan tanpa metadata Flutter/dependency, sehingga tidak ada bukti visual yang boleh diklaim.
 
-Tahap berikutnya adalah Step 5 / Tahap 4 setelah mendapat approval terpisah.
+### Tahap 4 — Step 5: Presentation, DI, dan Verifikasi
+
+**Status:** selesai pada scope presentation dan Dependency Injection feature `notes`.
+
+Step 5 menghubungkan halaman daftar catatan dengan `GetNotes`, interface `NoteRepository`, `NoteRepositoryImpl`, dan `openNotesDb` melalui provider Riverpod. `NotesPage` dipindahkan ke `lib/features/notes/presentation/pages/notes_page.dart`; wiring provider berada di `lib/features/notes/presentation/providers/notes_providers.dart`; `NoteTile` menggunakan entity Domain. CRUD/sync Week 5 yang belum memiliki kontrak Domain dipertahankan melalui compatibility seam agar perilaku existing tidak hilang.
+
+Dokumentasi: [Step 5 — Presentation, DI, dan Verifikasi](docs/step-5-presentation-di.md)
+
+`dart format` dan pemeriksaan boundary Domain/Core/presentation dijalankan. `flutter analyze` dan `flutter test` dicoba tetapi **BLOCKED** karena `pubspec.yaml` dan metadata dependency tidak tersedia; keduanya tidak diklaim PASS. Screenshot tidak dibuat karena aplikasi tidak dapat dijalankan tanpa metadata Flutter/dependency. Step 6 / AI Challenge belum dimulai.
+
 
 ## Riwayat tahap sebelumnya
 
