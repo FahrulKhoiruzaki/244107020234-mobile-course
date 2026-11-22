@@ -73,8 +73,47 @@ Verifikasi tambahan:
 
 Bukti visual alternatif tidak dibuat karena Chrome DevTools tidak tersedia dan tidak ada aplikasi/preview target yang dapat ditampilkan secara valid. Output command aktual dicatat sebagai teks, bukan diklaim sebagai screenshot aplikasi.
 
-Step 7 / Tahap 6 belum dimulai.
+Step 7 / Tahap 6 dimulai setelah Stage 5 dan didokumentasikan pada bagian Tahap 6 di atas.
 
+
+### Tahap 6 — Step 7: Refactoring, Testing, dan Boundary
+
+**Status:** implementasi Step 7 selesai pada scope Week 7; Step 8 belum dimulai.
+
+Feature kedua `announcements` memakai struktur feature-first lengkap:
+
+```text
+announcements presentation
+  → domain GetAnnouncements
+    → domain AnnouncementRepository
+      → data AnnouncementRepositoryImpl
+        → injected cache loader
+          → existing cached_posts/cache-first seam
+```
+
+Entity, repository contract, use case, model, repository implementation, provider wiring, dan page berada di `lib/features/announcements/`. Sumber data menggunakan cache `cached_posts` yang sudah ada. Ini adalah local cached-announcements adapter; tidak diklaim sebagai migrasi backend Campus Notify karena endpoint/schema announcements tidak tersedia secara verifiable pada target.
+
+Perubahan Step 7 lainnya:
+
+- `lib/core/format.dart` menambahkan `formatDate`, `normalizeRoute`, dan `parseRouteId` tanpa Flutter atau dependency eksternal.
+- `NoteDetailPage` menggunakan formatter pure dan router menggunakan parser pure.
+- `Failure` mempertahankan pesan user-facing melalui `toString`; notes dan announcements provider mempertahankan typed `Failure` tanpa membungkusnya dengan generic `Exception`.
+- `/announcements` ditambahkan dan `/posts` dipertahankan sebagai compatibility route menuju typed announcements page.
+- Fake repository tests ditambahkan untuk announcements dan formatter; notes failure test mengassert pesan friendly.
+
+Dokumentasi lengkap: [Step 7 — Refactoring, Testing, dan Boundary](docs/step-7-refactoring-testing.md)
+
+Verifikasi aktual:
+
+- `dart format`: berhasil, `Formatted 17 files (5 changed) in 0.02 seconds.`
+- `dart analyze` pada Core dan Domain: **PASS**, `No issues found!`.
+- Boundary scans: hasil aktual dicatat di dokumentasi; Core/Domain bebas import infrastructure, entity hanya memiliki `dirty` sebagai business state, dan concrete repository match berada pada provider composition boundary.
+- Scan tambahan presentation raw map/Dio/JSON/exception: tidak menemukan output.
+- `flutter analyze`: **BLOCKED/FAIL**, karena target tidak memiliki `pubspec.yaml` dan dependency metadata; actual output diawali `Target of URI doesn't exist: 'package:path/path.dart'` dan exit code `1`.
+- `flutter test`: **BLOCKED/FAIL**, karena target tidak memiliki `pubspec.yaml`; actual output `Error: No pubspec.yaml file found.` dan exit code `1`.
+- `git diff --check`: **PASS**, exit code `0`.
+- Screenshot runtime: **BLOCKED**, karena aplikasi target tidak runnable. Tidak ada placeholder atau screenshot Week 6 yang disalin.
+- Week 6, Week 5, dependency, lockfile, dan konfigurasi tidak menjadi bagian perubahan Step 7.
 
 ## Riwayat tahap sebelumnya
 

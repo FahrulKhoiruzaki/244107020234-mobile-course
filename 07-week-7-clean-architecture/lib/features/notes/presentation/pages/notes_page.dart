@@ -59,7 +59,7 @@ class NotesPage extends ConsumerWidget {
         title: const Text('Offline Notes'),
         actions: [
           IconButton(
-            onPressed: () => context.push('/posts'),
+            onPressed: () => context.push('/announcements'),
             icon: const Icon(Icons.cloud_download_outlined),
             tooltip: 'Cached posts',
           ),

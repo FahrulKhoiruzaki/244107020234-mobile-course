@@ -53,6 +53,7 @@ void main() {
       final result = await GetNotes(FakeNoteRepository(fail: true)).call();
 
       expect(result.failure, isA<LocalFailure>());
+      expect(result.failure!.message, 'db locked (simulasi)');
       expect(result.notes, isEmpty);
     },
   );

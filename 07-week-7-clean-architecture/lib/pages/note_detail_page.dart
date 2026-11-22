@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/format.dart';
 import '../features/notes/presentation/providers/notes_providers.dart';
 
 class NoteDetailPage extends ConsumerWidget {
@@ -30,7 +31,7 @@ class NoteDetailPage extends ConsumerWidget {
               const SizedBox(height: 12),
               Text(value.body.isEmpty ? 'Tidak ada isi catatan.' : value.body),
               const SizedBox(height: 16),
-              Text('Diperbarui: ${value.updatedAt.toLocal()}'),
+              Text('Diperbarui: ${formatDate(value.updatedAt)}'),
               const SizedBox(height: 8),
               Text(
                 value.dirty

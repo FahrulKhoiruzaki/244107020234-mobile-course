@@ -20,7 +20,7 @@ final notesProvider = FutureProvider<List<Note>>((ref) async {
 
   final failure = result.failure;
   if (failure != null) {
-    throw Exception(failure.message);
+    throw failure;
   }
 
   return result.notes;

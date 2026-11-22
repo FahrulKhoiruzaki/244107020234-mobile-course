@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'features/notes/presentation/pages/notes_page.dart';
 import 'features/notes/presentation/providers/notes_providers.dart'
     as notes_feature;
+import 'features/announcements/presentation/pages/announcements_page.dart';
+import 'core/format.dart';
 import 'pages/note_detail_page.dart';
 import 'pages/posts_page.dart';
 import 'pages/settings_page.dart';
@@ -33,7 +35,7 @@ class _NotesAppState extends ConsumerState<NotesApp> {
         GoRoute(
           path: '/note/:id',
           builder: (context, state) {
-            final id = int.tryParse(state.pathParameters['id'] ?? '');
+            final id = parseRouteId(state.pathParameters['id']);
             if (id == null) {
               return const Scaffold(
                 body: Center(child: Text('ID catatan tidak valid.')),
@@ -41,6 +43,10 @@ class _NotesAppState extends ConsumerState<NotesApp> {
             }
             return NoteDetailPage(noteId: id);
           },
+        ),
+        GoRoute(
+          path: '/announcements',
+          builder: (context, state) => const AnnouncementsPage(),
         ),
         GoRoute(path: '/posts', builder: (context, state) => const PostsPage()),
         GoRoute(
